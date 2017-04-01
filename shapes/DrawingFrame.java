@@ -9,9 +9,9 @@ public class DrawingFrame {
     {
         JFrame frame=new JFrame("Draw your Shape");
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        //frame.setIconImage(new ImageIcon(imgURL).getImage());
-        frame.getContentPane();
+        //frame.setIconImage(new ImageIcon(imgURL).getImage;
         frame.pack();
+        frame.setSize(800, 600);
         frame.setVisible(true);
     }
 
