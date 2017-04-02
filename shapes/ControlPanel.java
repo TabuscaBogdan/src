@@ -14,7 +14,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import javax.swing.filechooser.FileNameExtensionFilter;
-
+import java.nio.*;
 /**
  * Created by Bogdan on 01.04.2017.
  */
@@ -83,8 +83,10 @@ class ControlPanel extends JPanel {
 
         save.addActionListener(new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent e){
-                JFileChooser saveFile = new JFileChooser();
+            public void actionPerformed(ActionEvent e) {
+                JFileChooser saveFile=new JFileChooser();
+                saveFile.setSelectedFile(new File("Shapes.jpg"));
+
                 FileNameExtensionFilter filter = new FileNameExtensionFilter(
                         "PNG image", "png");
                 saveFile.setFileFilter(filter);
@@ -108,4 +110,5 @@ class ControlPanel extends JPanel {
         this.setBorder(BorderFactory.createLineBorder(Color.ORANGE, 2, false));
         //==================================
     }
+
 }
