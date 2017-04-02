@@ -14,7 +14,7 @@ public class Canvas extends JPanel{
     public void paintComponent(Graphics g)
     {
         super.paintComponent(g);
-        RegularPolygon p=new RegularPolygon(8,8,8,5);
+        RegularPolygon p = new RegularPolygon(8,8,8,5);
         g.drawPolygon(p);
     }
 
