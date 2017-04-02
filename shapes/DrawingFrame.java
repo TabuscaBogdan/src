@@ -29,13 +29,14 @@ public class DrawingFrame extends JFrame{
         Toolbar toolbar = new Toolbar();
         this.add(toolbar, BorderLayout.NORTH);
 
-        JPanel controlPanel = new ControlPanel();
+        ControlPanel controlPanel = new ControlPanel();
         this.add(controlPanel, BorderLayout.SOUTH);
 
         Canvas canvas = new Canvas();
         this.add(canvas, BorderLayout.CENTER);
         toolbar.setCanvas(canvas);
 
+        controlPanel.setCanvas((Canvas) canvas);
         this.pack();
         this.setSize(800, 600);
         this.setLocation(getGuiStartLocation());

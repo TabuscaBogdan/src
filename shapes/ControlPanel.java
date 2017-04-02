@@ -10,10 +10,11 @@ import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.OutputStream;
 import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
-
+import java.nio.*;
 /**
  * Created by Bogdan on 01.04.2017.
  */
@@ -24,6 +25,14 @@ public class ControlPanel extends JPanel {
     JButton draw;
     JButton load;
     JButton clear;
+
+    Canvas mcanvas;
+
+    public void setCanvas(Canvas canvas)
+    {
+        mcanvas=canvas;
+    }
+
 
 
     public void saveComponentAsJPEG(Component myComponent, String filename) {
@@ -55,7 +64,7 @@ public class ControlPanel extends JPanel {
         clear.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                JOptionPane.showMessageDialog(null, "The canvas has been cleaned,Not rly...");
+                JOptionPane.showMessageDialog(null, "Imposible...");
 
             }
         });
@@ -67,6 +76,12 @@ public class ControlPanel extends JPanel {
                 int result = openFile.showOpenDialog(null);
                 if (result == JFileChooser.APPROVE_OPTION) {
                     File selectedFile = openFile.getSelectedFile();
+                    Desktop machine =Desktop.getDesktop();
+                    try {
+                        machine.open(selectedFile);
+                    } catch (IOException e1) {
+                        e1.printStackTrace();
+                    }
                     //pathField.setText(selectedFile.getAbsolutePath());
                     //do something with the file, like show picture
                 }
@@ -85,11 +100,14 @@ public class ControlPanel extends JPanel {
             @Override
             public void actionPerformed(ActionEvent e) {
                 JFileChooser saveFile=new JFileChooser();
+                saveFile.setSelectedFile(new File("Shapes.jpg"));
                 FileNameExtensionFilter filter = new FileNameExtensionFilter(
                         "JPG & GIF Images", "jpg", "png");
                 int result = saveFile.showSaveDialog(null);
                 if(result== JFileChooser.APPROVE_OPTION) {
+
                     File fileToSave = saveFile.getSelectedFile();
+                    saveComponentAsJPEG(mcanvas,fileToSave.getName());
                 }
             }
         }));
@@ -106,4 +124,5 @@ public class ControlPanel extends JPanel {
         //==================================
 
     }
+
 }
