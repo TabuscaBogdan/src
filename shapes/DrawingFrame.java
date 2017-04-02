@@ -26,14 +26,15 @@ public class DrawingFrame extends JFrame{
     {
         this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         this.setLayout(new BorderLayout());
-        JPanel toolbar = new Toolbar();
+        Toolbar toolbar = new Toolbar();
         this.add(toolbar, BorderLayout.NORTH);
 
         JPanel controlPanel = new ControlPanel();
         this.add(controlPanel, BorderLayout.SOUTH);
 
-        JPanel canvas = new Canvas();
+        Canvas canvas = new Canvas();
         this.add(canvas, BorderLayout.CENTER);
+        toolbar.setCanvas(canvas);
 
         this.pack();
         this.setSize(800, 600);
