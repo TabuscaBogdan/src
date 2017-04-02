@@ -8,8 +8,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 /**
- * Created by Bogdan on 01.04.2017.
+ * Created by Octavian on 02.04.2017.
  */
+
 public class Toolbar extends JPanel{
     private JButton colorSetter;
     private Color selectedColor;

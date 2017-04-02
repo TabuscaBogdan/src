@@ -1,11 +1,11 @@
-package shapes; /**
- * Created by Bogdan on 01.04.2017.
- */
-import javafx.scene.canvas.*;
-import javafx.scene.canvas.Canvas;
+package shapes;
 
 import javax.swing.*;
 import java.awt.*;
+
+/**
+ * Created by Octavian on 01.04.2017.
+ */
 
 public class DrawingFrame extends JFrame{
 
@@ -25,8 +25,13 @@ public class DrawingFrame extends JFrame{
     private void createWindow()
     {
         this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        this.setLayout(new BorderLayout());
         JPanel toolbar = new Toolbar();
-        this.add(toolbar);
+        this.add(toolbar, BorderLayout.NORTH);
+
+        JPanel controlPanel = new ControlPanel();
+        this.add(controlPanel, BorderLayout.SOUTH);
+
         this.pack();
         this.setSize(800, 600);
         this.setLocation(getGuiStartLocation());
