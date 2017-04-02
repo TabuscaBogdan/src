@@ -9,39 +9,49 @@ import java.awt.*;
 
 public class DrawingFrame extends JFrame{
 
-    public DrawingFrame(){
-        super("Tavbusca Paint!");
+    DrawingFrame(){
+        super("Lab6 Paint!");
         createWindow();
     }
 
-    private Point getGuiStartLocation(){
-        int locationY = (int) Toolkit.getDefaultToolkit().getScreenSize().getHeight() / 2;
-        locationY -= this.getSize().getHeight() / 2;
-        int locationX = (int) Toolkit.getDefaultToolkit().getScreenSize().getWidth() / 2;
-        locationX -= this.getSize().getWidth() / 2;
-        return new Point(locationX, locationY);
-    }
-
-    private void createWindow()
-    {
+    private void createWindow() {
         this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         this.setLayout(new BorderLayout());
-        Toolbar toolbar = new Toolbar();
-        this.add(toolbar, BorderLayout.NORTH);
-
-        JPanel controlPanel = new ControlPanel();
-        this.add(controlPanel, BorderLayout.SOUTH);
 
         Canvas canvas = new Canvas();
         this.add(canvas, BorderLayout.CENTER);
-        toolbar.setCanvas(canvas);
+
+        Toolbar toolbar = new Toolbar();
+        this.add(toolbar, BorderLayout.NORTH);
+
+        ControlPanel controlPanel = new ControlPanel();
+        this.add(controlPanel, BorderLayout.SOUTH);
 
         this.pack();
-        this.setSize(800, 600);
-        this.setLocation(getGuiStartLocation());
+        this.setSize(800, 800);
+        this.setResizable(false);
+        this.setLocation(DrawingFrame.getCenterScreen(this.getSize()));
         this.setVisible(true);
+
+        toolbar.setCanvas(canvas);
+        canvas.setToolbar(toolbar);
+        controlPanel.setCanvas(canvas);
+
+        System.out.println("[Debug][DrawingFrame] " + canvas);
+        System.out.println("[Debug][DrawingFrame] " + toolbar.getCanvas());
+
+        if(canvas.hashCode() == toolbar.getCanvas().hashCode()){
+            System.out.println("[Debug][DrawingFrame] Same canvas...");
+        }
     }
 
+    static Point getCenterScreen(Dimension dimension){
+        int locationY = (int) Toolkit.getDefaultToolkit().getScreenSize().getHeight() / 2;
+        locationY -= dimension.getHeight() / 2;
+        int locationX = (int) Toolkit.getDefaultToolkit().getScreenSize().getWidth() / 2;
+        locationX -= dimension.getWidth() / 2;
+        return new Point(locationX, locationY);
+    }
 
     public static void main(String[] args) {
         javax.swing.SwingUtilities.invokeLater(new Runnable() {
@@ -49,7 +59,5 @@ public class DrawingFrame extends JFrame{
                 new DrawingFrame();
             }
         });
-
     }
-
 }

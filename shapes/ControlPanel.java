@@ -3,6 +3,7 @@ package shapes;
 import com.sun.image.codec.jpeg.JPEGCodec;
 import com.sun.image.codec.jpeg.JPEGImageEncoder;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -10,23 +11,26 @@ import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.OutputStream;
-import javax.swing.*;
 import javax.swing.filechooser.FileNameExtensionFilter;
 
 /**
  * Created by Bogdan on 01.04.2017.
  */
 
-public class ControlPanel extends JPanel {
-    JLabel options;
-    JButton save;
-    JButton draw;
-    JButton load;
-    JButton clear;
+class ControlPanel extends JPanel {
+    private Canvas canvas;
 
+    void setCanvas(Canvas canvas){
+        this.canvas = canvas;
+    }
 
-    public void saveComponentAsJPEG(Component myComponent, String filename) {
+    Canvas getCanvas() {
+        return canvas;
+    }
+
+    private void saveImage(Component myComponent, File filename) {
         Dimension size = myComponent.getSize();
         BufferedImage myImage = new BufferedImage(size.width, size.height, BufferedImage.TYPE_INT_RGB);
         Graphics2D g2 = myImage.createGraphics();
@@ -37,16 +41,15 @@ public class ControlPanel extends JPanel {
             encoder.encode(myImage);
             out.close();
         } catch (Exception e) {
-            System.out.println(e);
+            e.printStackTrace();
         }
     }
 
-    public ControlPanel() {
-        options = new JLabel("Select Task:");
-        save = new JButton("Save");
-        draw = new JButton("Draw");
-        load = new JButton("Load");
-        clear = new JButton("Clear");
+    ControlPanel() {
+        JLabel options = new JLabel("Select Task:");
+        JButton save = new JButton("Save");
+        JButton load = new JButton("Load");
+        JButton clear = new JButton("Clear");
 
         //==================================
         //         Listeners:
@@ -55,8 +58,7 @@ public class ControlPanel extends JPanel {
         clear.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                JOptionPane.showMessageDialog(null, "The canvas has been cleaned,Not rly...");
-
+                canvas.clear();
             }
         });
 
@@ -67,43 +69,43 @@ public class ControlPanel extends JPanel {
                 int result = openFile.showOpenDialog(null);
                 if (result == JFileChooser.APPROVE_OPTION) {
                     File selectedFile = openFile.getSelectedFile();
-                    //pathField.setText(selectedFile.getAbsolutePath());
-                    //do something with the file, like show picture
+                    Graphics2D g2 = canvas.getGraphics();
+                    BufferedImage image = null;
+                    try {
+                        image = ImageIO.read(selectedFile);
+                    } catch (IOException e1) {
+                        e1.printStackTrace();
+                    }
+                    g2.drawImage(image, 0, 0, canvas);
                 }
             }
         });
 
-        draw.addActionListener(new ActionListener() {
+        save.addActionListener(new ActionListener() {
             @Override
-            public void actionPerformed(ActionEvent e) {
-                // get input from toolbar
-                // apeleaza drawn in canvas
-            }
-        });
-
-        save.addActionListener((new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                JFileChooser saveFile=new JFileChooser();
+            public void actionPerformed(ActionEvent e){
+                JFileChooser saveFile = new JFileChooser();
                 FileNameExtensionFilter filter = new FileNameExtensionFilter(
-                        "JPG & GIF Images", "jpg", "png");
+                        "PNG image", "png");
+                saveFile.setFileFilter(filter);
+
                 int result = saveFile.showSaveDialog(null);
                 if(result== JFileChooser.APPROVE_OPTION) {
                     File fileToSave = saveFile.getSelectedFile();
+                    saveImage(canvas, fileToSave);
+                    System.out.println("[Debug][Control Panel] Saved image");
                 }
             }
-        }));
+        });
 
 
         //==================================
         this.add(options);
-        this.add(draw);
         this.add(save);
         this.add(load);
         this.add(clear);
         //==================================
         this.setBorder(BorderFactory.createLineBorder(Color.ORANGE, 2, false));
         //==================================
-
     }
 }
