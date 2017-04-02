@@ -32,6 +32,9 @@ public class DrawingFrame extends JFrame{
         JPanel controlPanel = new ControlPanel();
         this.add(controlPanel, BorderLayout.SOUTH);
 
+        JPanel canvas = new Canvas();
+        this.add(canvas, BorderLayout.CENTER);
+
         this.pack();
         this.setSize(800, 600);
         this.setLocation(getGuiStartLocation());

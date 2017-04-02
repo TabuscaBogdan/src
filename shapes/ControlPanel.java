@@ -18,20 +18,12 @@ public class ControlPanel extends JPanel {
     JButton load;
     JButton clear;
 
-
-    JPanel canvas;
-
     public ControlPanel() {
         options = new JLabel("Select Task:");
         save = new JButton("Save");
         draw = new JButton("Draw");
         load = new JButton("Load");
         clear = new JButton("Clear");
-
-        //=========================(pt usurinta preluarii si pasarii datelor, (modifiable)
-        JPanel canvas = new Canvas();
-        this.setSize(800, 600);
-        this.add(canvas);
 
         //==================================
         //         Listeners:
@@ -81,7 +73,7 @@ public class ControlPanel extends JPanel {
         this.add(load);
         this.add(clear);
         //==================================
-        this.setBorder(BorderFactory.createLineBorder(Color.ORANGE, 2, true));
+        this.setBorder(BorderFactory.createLineBorder(Color.ORANGE, 2, false));
         //==================================
 
     }
