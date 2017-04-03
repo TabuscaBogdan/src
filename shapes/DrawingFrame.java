@@ -43,6 +43,7 @@ public class DrawingFrame extends JFrame{
         if(canvas.hashCode() == toolbar.getCanvas().hashCode()){
             System.out.println("[Debug][DrawingFrame] Same canvas...");
         }
+        System.out.println("[Debug][DrawingFrame] " + canvas.getGraphics());
     }
 
     static Point getCenterScreen(Dimension dimension){

@@ -103,7 +103,7 @@ public class Toolbar extends JPanel implements IToolbar{
             }
         });
 
-        JLabel strokeInfo = new JLabel("   Choose line width: ");
+        JLabel strokeInfo = new JLabel("   Line width: ");
 
         JPanel panel = new JPanel(new BorderLayout());
         panel.add(strokeInfo, BorderLayout.NORTH);
@@ -122,7 +122,7 @@ public class Toolbar extends JPanel implements IToolbar{
             }
         });
 
-        JLabel transparencyInfo = new JLabel("   Choose transparency: ");
+        JLabel transparencyInfo = new JLabel("   Line transparency: ");
 
         JPanel panel = new JPanel(new BorderLayout());
         panel.add(transparencyInfo, BorderLayout.NORTH);
@@ -154,6 +154,7 @@ public class Toolbar extends JPanel implements IToolbar{
         nbSidesSetter = new JComboBox<String>();
         for(int i = 3; i <= 16; ++i)
             nbSidesSetter.addItem(Integer.toString(i));
+
         nbSidesSetter.setBounds(125, 5, 50, 26);
         nbSidesSetter.addActionListener(new ActionListener() {
             @Override
@@ -197,7 +198,7 @@ public class Toolbar extends JPanel implements IToolbar{
     }
 
     private void initColorSetterButton() {
-        colorSetter = new JButton("Choose your color");
+        colorSetter = new JButton("Pick Format");
         colorSetter.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
