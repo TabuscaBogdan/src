@@ -1,11 +1,7 @@
 package shapes;
 
 import javax.swing.*;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.Random;
@@ -15,7 +11,7 @@ import java.util.Random;
  * Created by Octavian on 02.04.2017.
  */
 
-public class Toolbar extends JPanel implements IToolbar{
+public class Toolbar extends JPanel implements IToolbar {
     private JButton colorSetter;
     private JComboBox<String> nbSidesSetter;
     private JTextField nbShapesSetter;
@@ -28,8 +24,21 @@ public class Toolbar extends JPanel implements IToolbar{
     private int transparency = 127;
     private Canvas canvas;
 
+    Toolbar() {
+        this.setBorder(BorderFactory.createLineBorder(Color.ORANGE, 2, false));
+        this.setLayout(null);
+        this.setPreferredSize(new Dimension(800, 36));
+
+        initLabelSides();
+        initSidesSetter();
+        initLabelShapes();
+        initShapesSetter();
+        initColorSetterButton();
+        initDrawButton();
+    }
+
     @Override
-    public int getLineWidth(){
+    public int getLineWidth() {
         return this.lineWidth;
     }
 
@@ -53,42 +62,38 @@ public class Toolbar extends JPanel implements IToolbar{
         return selectedColor;
     }
 
-    public void setCanvas(Canvas canvas) {
-        this.canvas = canvas;
-    }
-
     public Canvas getCanvas() {
         return canvas;
     }
 
-    private void drawShapes(){
-        Graphics2D g2 = canvas.getGraphics();
+    public void setCanvas(Canvas canvas) {
+        this.canvas = canvas;
+    }
 
+    private void drawShapes() {
+        Graphics2D g2 = canvas.getGraphics();
         g2.setColor(new Color(selectedColor.getRed(), selectedColor.getGreen(), selectedColor.getBlue(), transparency));
         g2.setPaintMode();
         g2.setStroke(new BasicStroke(lineWidth));
-        Random randomer = new Random();
+        Random random = new Random();
 
-        for(int i = 0; i < nbOfShapes; ++i){
-            int x = randomer.nextInt(canvas.getWidth());
-            int y = randomer.nextInt(canvas.getHeight());
-            g2.drawPolygon(new RegularPolygon(x, y, 50, nbOfSides));
+        for (int i = 0; i < nbOfShapes; ++i) {
+            int x = random.nextInt(canvas.getWidth());
+            int y = random.nextInt(canvas.getHeight());
+            g2.drawPolygon(new RegularPolygon(x, y, nbOfSides));
         }
     }
 
     private void initColorChooser() {
         JColorChooser colorChooser = new JColorChooser();
-        colorChooser.getSelectionModel().addChangeListener(new ChangeListener() {
-            @Override
-            public void stateChanged(ChangeEvent e) {
-                selectedColor = colorChooser.getColor();
-                colorSetter.setBackground(selectedColor);
-                colorSetter.setForeground(new Color(
-                        255 - selectedColor.getRed(),
-                        255 - selectedColor.getGreen(),
-                        255 - selectedColor.getBlue()
-                ));
-            }
+        colorChooser.getSelectionModel().addChangeListener(e -> {
+            selectedColor = colorChooser.getColor();
+            colorSetter.setBackground(selectedColor);
+            colorSetter.setForeground(new Color(
+                    255 - selectedColor.getRed(),
+                    255 - selectedColor.getGreen(),
+                    255 - selectedColor.getBlue()
+            ));
         });
         colorChooserFrame.add(colorChooser, BorderLayout.NORTH);
     }
@@ -96,12 +101,7 @@ public class Toolbar extends JPanel implements IToolbar{
     private void initLineWidthSlider() {
         JSlider slider = new JSlider(1, 50);
         slider.setValue(lineWidth);
-        slider.addChangeListener(new ChangeListener() {
-            @Override
-            public void stateChanged(ChangeEvent e) {
-                lineWidth = slider.getValue();
-            }
-        });
+        slider.addChangeListener(e -> lineWidth = slider.getValue());
 
         JLabel strokeInfo = new JLabel("   Line width: ");
 
@@ -111,16 +111,10 @@ public class Toolbar extends JPanel implements IToolbar{
         colorChooserFrame.add(panel, BorderLayout.CENTER);
     }
 
-
     private void initTransparencySlider() {
         JSlider slider = new JSlider(0, 255);
         slider.setValue(transparency);
-        slider.addChangeListener(new ChangeListener() {
-            @Override
-            public void stateChanged(ChangeEvent e) {
-                transparency = slider.getValue();
-            }
-        });
+        slider.addChangeListener(e -> transparency = slider.getValue());
 
         JLabel transparencyInfo = new JLabel("   Line transparency: ");
 
@@ -130,7 +124,7 @@ public class Toolbar extends JPanel implements IToolbar{
         colorChooserFrame.add(panel, BorderLayout.SOUTH);
     }
 
-    private void initColorChooserFrame(){
+    private void initColorChooserFrame() {
         colorChooserFrame = new JFrame();
         colorChooserFrame.setDefaultCloseOperation(JFrame.HIDE_ON_CLOSE);
         colorChooserFrame.setLayout(new BorderLayout());
@@ -140,7 +134,7 @@ public class Toolbar extends JPanel implements IToolbar{
         initTransparencySlider();
 
         colorChooserFrame.pack();
-        colorChooserFrame.setLocation(DrawingFrame.getCenterScreen(colorChooserFrame.getSize()));
+        colorChooserFrame.setLocation(DrawingFrame.getScreenCenter(colorChooserFrame.getSize()));
         colorChooserFrame.setVisible(true);
     }
 
@@ -151,17 +145,12 @@ public class Toolbar extends JPanel implements IToolbar{
     }
 
     private void initSidesSetter() {
-        nbSidesSetter = new JComboBox<String>();
-        for(int i = 3; i <= 16; ++i)
+        nbSidesSetter = new JComboBox<>();
+        for (int i = 3; i <= 16; ++i)
             nbSidesSetter.addItem(Integer.toString(i));
 
         nbSidesSetter.setBounds(125, 5, 50, 26);
-        nbSidesSetter.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                nbOfSides = nbSidesSetter.getSelectedIndex() + 3;
-            }
-        });
+        nbSidesSetter.addActionListener(e -> nbOfSides = nbSidesSetter.getSelectedIndex() + 3);
         this.add(nbSidesSetter);
     }
 
@@ -173,7 +162,7 @@ public class Toolbar extends JPanel implements IToolbar{
 
     private void initShapesSetter() {
         nbShapesSetter = new JTextField();
-        nbShapesSetter.setBounds(355,5, 45, 26);
+        nbShapesSetter.setBounds(355, 5, 45, 26);
         nbShapesSetter.addKeyListener(new KeyListener() {
             @Override
             public void keyTyped(KeyEvent e) {
@@ -189,7 +178,7 @@ public class Toolbar extends JPanel implements IToolbar{
             public void keyReleased(KeyEvent e) {
                 try {
                     nbOfShapes = Integer.valueOf(nbShapesSetter.getText());
-                }catch(Exception parseException){
+                } catch (Exception parseException) {
                     nbOfShapes = 1;
                 }
             }
@@ -199,38 +188,15 @@ public class Toolbar extends JPanel implements IToolbar{
 
     private void initColorSetterButton() {
         colorSetter = new JButton("Pick Format");
-        colorSetter.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                initColorChooserFrame();
-            }
-        });
-        colorSetter.setBounds(460, 5, 140,26);
+        colorSetter.addActionListener(e -> initColorChooserFrame());
+        colorSetter.setBounds(460, 5, 140, 26);
         this.add(colorSetter);
     }
 
     private void initDrawButton() {
         JButton drawButton = new JButton("Draw Shapes");
         drawButton.setBounds(625, 5, 140, 26);
-        drawButton.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                drawShapes();
-            }
-        });
+        drawButton.addActionListener(e -> drawShapes());
         this.add(drawButton);
-    }
-
-    Toolbar(){
-        this.setBorder(BorderFactory.createLineBorder(Color.ORANGE, 2, false));
-        this.setLayout(null);
-        this.setPreferredSize(new Dimension(800, 36));
-
-        initLabelSides();
-        initSidesSetter();
-        initLabelShapes();
-        initShapesSetter();
-        initColorSetterButton();
-        initDrawButton();
     }
 }
