@@ -76,7 +76,8 @@ class FunctionCanvas extends JPanel {
         functionField.addMouseListener(new MouseListener() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                functionField.setText("");
+                if(functionField.getText().equals("f(x) = "))
+                    functionField.setText("");
             }
 
             @Override
